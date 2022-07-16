@@ -10,6 +10,10 @@ export const TaskStyle = styled.div`
 		justify-content: space-around;
 		align-items: center;
 		gap: 0.75rem;
+		div {
+			overflow-wrap: break-word;
+			word-break: break-word;
+		}
 		p {
 			font-weight: 400;
 			font-size: 0.875rem;
@@ -49,6 +53,7 @@ export const TaskStyle = styled.div`
 		.content-container {
 			display: flex;
 			align-items: center;
+			flex: 1;
 			.concluded {
 				color: var(--gray-300);
 				text-decoration-line: line-through;
