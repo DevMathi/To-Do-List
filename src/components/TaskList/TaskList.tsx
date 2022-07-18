@@ -1,13 +1,23 @@
-import { NoTask } from '../NoTask/NoTask';
-import { TaskListStyle } from './style';
-import { Task } from './Task/Task';
+import { useState } from 'react'
+import { Tasks } from '../Main/Main'
+import { NoTask } from '../NoTask/NoTask'
+import { TaskListStyle } from './style'
+import { Task } from './Task/Task'
 
 interface TaskListProps {
-	tasks: string[];
-	setTasks: (task: string[]) => void;
+	tasks: Tasks[]
+	setTasks: React.Dispatch<React.SetStateAction<Tasks[]>>
 }
 
 export function TaskList({ tasks, setTasks }: TaskListProps) {
+	const completedTasks = tasks.reduce((acc, current) => {
+		if (current.isChecked) {
+			return acc + 1
+		} else {
+			return acc
+		}
+	}, 0)
+
 	return (
 		<TaskListStyle>
 			<div className='counters-container'>
@@ -17,7 +27,9 @@ export function TaskList({ tasks, setTasks }: TaskListProps) {
 				</div>
 				<div className='to-do-concluded'>
 					<p>Concluidas</p>
-					<span>0 de {tasks.length}</span>
+					<span>
+						{completedTasks} de {tasks.length}
+					</span>
 				</div>
 			</div>
 			{tasks.length === 0 ? (
@@ -35,5 +47,5 @@ export function TaskList({ tasks, setTasks }: TaskListProps) {
 				</div>
 			)}
 		</TaskListStyle>
-	);
+	)
 }

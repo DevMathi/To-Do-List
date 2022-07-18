@@ -1,27 +1,41 @@
-import { MainStyle } from './style';
-import plusIcon from '../../assets/plus.svg';
-import { TaskList } from '../TaskList/TaskList';
-import { FormEvent, useState, ChangeEvent } from 'react';
+import { MainStyle } from './style'
+import plusIcon from '../../assets/plus.svg'
+import { TaskList } from '../TaskList/TaskList'
+import { FormEvent, useState, ChangeEvent } from 'react'
+
+export interface Tasks {
+	id: number
+	task: string
+	isChecked: boolean
+}
 
 export function Main() {
-	const [tasks, setTasks] = useState<string[]>([]);
-	const [newTaskContent, setNewTaskContent] = useState('');
-	const [value, setValue] = useState('');
+	const [tasks, setTasks] = useState<Tasks[]>([])
+	const [newTaskContent, setNewTaskContent] = useState<Tasks>({} as Tasks)
+	const [value, setValue] = useState('')
 
 	function createNewTask(event: FormEvent) {
-		event.preventDefault();
-		setTasks([...tasks, newTaskContent]);
-		setValue('');
+		event.preventDefault()
+		const taskAlreadyCreated = tasks.some(
+			(task) => task.task.trim() === newTaskContent.task.trim()
+		)
+		if (taskAlreadyCreated) return
+		setTasks([...tasks, newTaskContent])
+		setValue('')
 	}
 
 	function newTaskChange(event: ChangeEvent<HTMLInputElement>) {
-		event.target.setCustomValidity('');
-		setNewTaskContent(event.target.value);
-		setValue(event.target.value);
+		event.target.setCustomValidity('')
+		setNewTaskContent({
+			id: Math.floor(Math.random() * 100),
+			task: event.target.value,
+			isChecked: false,
+		})
+		setValue(event.target.value)
 	}
 
 	function newTaskInvalid(event: ChangeEvent<HTMLInputElement>) {
-		event.target.setCustomValidity('Esse campo é obrigatório');
+		event.target.setCustomValidity('Esse campo é obrigatório')
 	}
 
 	return (
@@ -43,5 +57,5 @@ export function Main() {
 			</form>
 			<TaskList tasks={tasks} setTasks={setTasks} />
 		</MainStyle>
-	);
+	)
 }
